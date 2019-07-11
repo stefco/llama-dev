@@ -1,9 +1,11 @@
 # For building and uploading conda packages and environments
 FROM stefco/llama-env:py36
 
+USER root
 COPY requirements-dev.txt /home/llama/requirements-dev.txt
 RUN su llama -c 'bash -i -c " \
         conda install anaconda-client conda-build \
             && pip install -r /home/llama/requirements-dev.txt \
     "' \
     && rm /home/llama/requirements-dev.txt
+USER llama
