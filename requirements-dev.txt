@@ -14,4 +14,3 @@ sphinx-argparse
 recommonmark
 setuptools-scm
 twine
-pypiprivate
