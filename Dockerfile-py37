@@ -1,9 +1,32 @@
 # For building and uploading conda packages and environments
 FROM stefco/llama-env:py37
 
-ARG DOCKER_META
 USER root
 COPY requirements-dev.txt /home/llama/requirements-dev.txt
+
+# put metadata in /docker-meta.yml
+ARG NAME
+ARG VERSION
+ARG COMMIT
+ARG URL
+ARG BRANCH
+ARG DATE
+ARG REPO
+ARG DOCKER_TAG
+ARG DOCKERFILE_PATH
+RUN echo >>/docker-meta.yml "- name: ${NAME}" \
+    && echo >>/docker-meta.yml "  version: ${VERSION}" \
+    && echo >>/docker-meta.yml "  commit: ${COMMIT}" \
+    && echo >>/docker-meta.yml "  url: ${URL}" \
+    && echo >>/docker-meta.yml "  branch: ${BRANCH}" \
+    && echo >>/docker-meta.yml "  date: ${DATE}" \
+    && echo >>/docker-meta.yml "  repo: ${REPO}" \
+    && echo >>/docker-meta.yml "  docker_tag: ${DOCKER_TAG}" \
+    && echo >>/docker-meta.yml "  dockerfile_path: ${DOCKERFILE_PATH}" \
+    && echo >>/docker-meta.yml "  dockerfile: |" \
+    && sed >>/docker-meta.yml 's/^/    /' <"${DOCKERFILE_PATH}"
+
+# install developer tools
 RUN apk --no-cache add vim make rsync texlive-full \
     && su llama -c 'bash -i -c " \
         conda install anaconda-client conda-build \
@@ -11,6 +34,5 @@ RUN apk --no-cache add vim make rsync texlive-full \
             && pip install git+https://github.com/stefco/pypiprivate.git \
             && rm -r ~/miniconda3/pkgs \
     "' \
-    && echo "${DOCKER_META}" >>/docker-meta.yml \
     && rm /home/llama/requirements-dev.txt
 USER llama
