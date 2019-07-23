@@ -1,11 +1,12 @@
 # For building and uploading conda packages and environments
 FROM stefco/llama-env:py36
 
+ENV DOCKER_VERSION=0.0.9
+ENV DOCKER_REPO=stefco/llama-dev
+ENV DOCKER_TAG=py36
 USER root
 COPY requirements-dev.txt /home/llama/requirements-dev.txt
-RUN printf '{"source_branch": "%s", "source_commit": "%s", "image_name": "%s"}' \
-        "${SOURCE_BRANCH}" "${SOURCE_COMMIT}" "${IMAGE_NAME}" >/docker-info.json \
-    && apk --no-cache add vim make rsync git texlive-full ssh \
+RUN apk --no-cache add vim make rsync git texlive-full openssh \
     && su llama -c 'bash -i -c " \
         conda install anaconda-client conda-build \
             && pip install -r /home/llama/requirements-dev.txt \
