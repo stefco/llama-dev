@@ -1,8 +1,7 @@
 # For building and uploading conda packages and environments
 FROM stefco/llama-env:py37
 
-USER root
-COPY requirements-dev.txt /home/llama/requirements-dev.txt
+COPY . /home/llama/provision
 
 # put metadata in /docker-meta.yml
 ARG NAME
@@ -24,15 +23,17 @@ RUN echo >>/docker-meta.yml "- name: ${NAME}" \
     && echo >>/docker-meta.yml "  docker_tag: ${DOCKER_TAG}" \
     && echo >>/docker-meta.yml "  dockerfile_path: ${DOCKERFILE_PATH}" \
     && echo >>/docker-meta.yml "  dockerfile: |" \
-    && sed >>/docker-meta.yml 's/^/    /' <"${DOCKERFILE_PATH}"
+    && sed >>/docker-meta.yml 's/^/    /' \
+        </home/llama/provision/"${DOCKERFILE_PATH}"
 
 # install developer tools
+USER root
 RUN apk --no-cache add vim make rsync texlive-full \
     && su llama -c 'bash -i -c " \
         conda install anaconda-client conda-build \
-            && pip install -r /home/llama/requirements-dev.txt \
+            && pip install -r /home/llama/provision/requirements-dev.txt \
             && pip install git+https://github.com/stefco/pypiprivate.git \
             && rm -r ~/miniconda3/pkgs \
     "' \
-    && rm /home/llama/requirements-dev.txt
+    && rm /home/llama/provision
 USER llama
