@@ -35,5 +35,5 @@ RUN apk --no-cache add vim make rsync texlive-full \
             && pip install git+https://github.com/stefco/pypiprivate.git \
             && rm -r ~/miniconda3/pkgs \
     "' \
-    && rm /home/llama/provision
+    && rm -rf /home/llama/provision
 USER llama
