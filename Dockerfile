@@ -1,5 +1,6 @@
 # For building and uploading conda packages and environments
-FROM stefco/llama-env:py36
+ARG DOCKER_TAG
+FROM stefco/llama-env:${DOCKER_TAG}
 
 COPY . /home/llama/provision
 USER root
@@ -12,7 +13,6 @@ ARG URL
 ARG BRANCH
 ARG DATE
 ARG REPO
-ARG DOCKER_TAG
 ARG DOCKERFILE_PATH
 RUN echo >>/docker-meta.yml "- name: ${NAME}" \
     && echo >>/docker-meta.yml "  version: ${VERSION}" \
