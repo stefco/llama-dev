@@ -2,6 +2,7 @@
 FROM stefco/llama-env:py37
 
 COPY . /home/llama/provision
+USER root
 
 # put metadata in /docker-meta.yml
 ARG NAME
@@ -27,7 +28,6 @@ RUN echo >>/docker-meta.yml "- name: ${NAME}" \
         </home/llama/provision/"${DOCKERFILE_PATH}"
 
 # install developer tools
-USER root
 RUN apk --no-cache add vim make rsync texlive-full \
     && su llama -c 'bash -i -c " \
         conda install anaconda-client conda-build \
