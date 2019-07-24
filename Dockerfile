@@ -22,7 +22,7 @@ RUN echo >>/docker-meta.yml "- name: ${NAME}" \
     && echo >>/docker-meta.yml "  dockerfile_path: ${DOCKERFILE_PATH}" \
     && echo >>/docker-meta.yml "  dockerfile: |" \
     && sed >>/docker-meta.yml 's/^/    /' </provision/"${DOCKERFILE_PATH}" \
-    && rm -r /provision/Dockerfile
+    && rm -r /provision
 # END CREATE docker-meta.yml
 #------------------------------------------------------------------------------
 
