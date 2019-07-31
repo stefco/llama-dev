@@ -36,7 +36,7 @@ RUN echo >>/docker-meta.yml "- name: ${NAME}" \
 #------------------------------------------------------------------------------
 
 # For building and uploading conda packages and environments
-FROM stefco/llama-env:${DOCKER_TAG}
+FROM stefco/llama-env:${DOCKER_TAG}-0.3.15
 USER root
 
 #------------------------------------------------------------------------------
