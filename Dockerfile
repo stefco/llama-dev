@@ -59,6 +59,8 @@ RUN su llama -c 'bash -i -c " \
             && pip install -r /home/llama/provision/requirements-dev.txt \
             && pip install git+https://github.com/stefco/pypiprivate.git \
             && rm -r ~/miniconda3/pkgs \
+            && mkdir -p /home/llama/.local/share \
+            && mkdir -p /home/.cache \
     "' \
     && rm -rf /home/llama/provision
 USER llama
