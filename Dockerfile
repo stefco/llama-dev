@@ -36,7 +36,7 @@ RUN echo >>/docker-meta.yml "- name: ${NAME}" \
 #------------------------------------------------------------------------------
 
 # For building and uploading conda packages and environments
-FROM stefco/llama-env:${DOCKER_TAG}-0.6.0
+FROM stefco/llama-env:${DOCKER_TAG}-0.7.0
 USER root
 
 #------------------------------------------------------------------------------
@@ -56,8 +56,6 @@ RUN apt-get -y update \
     && rm -rf /var/lib/apt/lists/*
 RUN su llama -c 'bash -i -c " \
     conda install anaconda-client conda-build \
-        && mkdir -p /home/llama/.local/share \
-        && mkdir -p /home/llama/.cache \
         && pip install -r /home/llama/provision/requirements-dev.txt \
         && pip install git+https://github.com/stefco/pypiprivate.git \
         && rm -r ~/miniconda3/pkgs \
