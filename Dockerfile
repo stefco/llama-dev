@@ -55,12 +55,12 @@ RUN apt-get -y update \
     && apt-get install -y --no-install-recommends make rsync texlive-full \
     && rm -rf /var/lib/apt/lists/*
 RUN su llama -c 'bash -i -c " \
-        conda install anaconda-client conda-build \
-            && pip install -r /home/llama/provision/requirements-dev.txt \
-            && pip install git+https://github.com/stefco/pypiprivate.git \
-            && rm -r ~/miniconda3/pkgs \
-            && mkdir -p /home/llama/.local/share \
-            && mkdir -p /home/.cache \
+    conda install anaconda-client conda-build \
+        && mkdir -p /home/llama/.local/share \
+        && mkdir -p /home/llama/.cache \
+        && pip install -r /home/llama/provision/requirements-dev.txt \
+        && pip install git+https://github.com/stefco/pypiprivate.git \
+        && rm -r ~/miniconda3/pkgs \
     "' \
     && rm -rf /home/llama/provision
 USER llama
