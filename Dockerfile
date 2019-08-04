@@ -55,8 +55,7 @@ RUN apt-get -y update \
     && apt-get install -y --no-install-recommends make rsync texlive-full \
     && rm -rf /var/lib/apt/lists/*
 RUN su llama -c 'bash -i -c " \
-    conda install anaconda-client conda-build jupyterlab_latex \
-        && jupyter labextension install @jupyterlab/latex \
+    conda install anaconda-client conda-build \
         && pip install -r /home/llama/provision/requirements-dev.txt \
         && pip install git+https://github.com/stefco/pypiprivate.git \
         && rm -r ~/miniconda3/pkgs \
