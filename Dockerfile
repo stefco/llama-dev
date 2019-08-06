@@ -51,14 +51,15 @@ RUN cat /new-docker-meta.yml >>/docker-meta.yml \
 
 # install developer tools
 COPY . /home/llama/provision
-RUN apt-get -y update \
-    && apt-get install -y --no-install-recommends make rsync texlive-full \
-    && rm -rf /var/lib/apt/lists/*
 RUN su llama -c 'bash -i -c " \
-    conda install anaconda-client conda-build \
+    conda install anaconda-client conda-build julia \
+        && julia -e \"using Pkg; Pkg.add(\\\"IJulia\\\")\"
         && pip install -r /home/llama/provision/requirements-dev.txt \
         && pip install git+https://github.com/stefco/pypiprivate.git \
         && rm -r ~/miniconda3/pkgs \
     "' \
     && rm -rf /home/llama/provision
+RUN apt-get -y update \
+    && apt-get install -y --no-install-recommends make rsync texlive-full \
+    && rm -rf /var/lib/apt/lists/*
 USER llama
