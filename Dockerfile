@@ -53,7 +53,7 @@ RUN cat /new-docker-meta.yml >>/docker-meta.yml \
 COPY . /home/llama/provision
 RUN su llama -c 'bash -i -c " \
     conda install anaconda-client conda-build julia \
-        && julia -e \"using Pkg; Pkg.add(\\\"IJulia\\\")\"
+        && julia -e \"using Pkg; Pkg.add(\\\"IJulia\\\")\" \
         && pip install -r /home/llama/provision/requirements-dev.txt \
         && pip install git+https://github.com/stefco/pypiprivate.git \
         && rm -r ~/miniconda3/pkgs \
