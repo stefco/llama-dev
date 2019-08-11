@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# CREATE docker-meta.yml
+# CREATE /etc/docker-meta.yml
 ARG DOCKER_TAG
 ARG NAME
 ARG VERSION
@@ -20,46 +20,44 @@ ARG DATE
 ARG REPO
 ARG DOCKERFILE_PATH
 COPY "${DOCKERFILE_PATH}" /provision/"${DOCKERFILE_PATH}"
-RUN echo >>/docker-meta.yml "- name: ${NAME}" \
-    && echo >>/docker-meta.yml "  version: ${VERSION}" \
-    && echo >>/docker-meta.yml "  commit: ${COMMIT}" \
-    && echo >>/docker-meta.yml "  url: ${URL}" \
-    && echo >>/docker-meta.yml "  branch: ${BRANCH}" \
-    && echo >>/docker-meta.yml "  date: ${DATE}" \
-    && echo >>/docker-meta.yml "  repo: ${REPO}" \
-    && echo >>/docker-meta.yml "  docker_tag: ${DOCKER_TAG}" \
-    && echo >>/docker-meta.yml "  dockerfile_path: ${DOCKERFILE_PATH}" \
-    && echo >>/docker-meta.yml "  dockerfile: |" \
-    && sed >>/docker-meta.yml 's/^/    /' </provision/"${DOCKERFILE_PATH}" \
+RUN echo >>/etc/docker-meta.yml "- name: ${NAME}" \
+    && echo >>/etc/docker-meta.yml "  version: ${VERSION}" \
+    && echo >>/etc/docker-meta.yml "  commit: ${COMMIT}" \
+    && echo >>/etc/docker-meta.yml "  url: ${URL}" \
+    && echo >>/etc/docker-meta.yml "  branch: ${BRANCH}" \
+    && echo >>/etc/docker-meta.yml "  date: ${DATE}" \
+    && echo >>/etc/docker-meta.yml "  repo: ${REPO}" \
+    && echo >>/etc/docker-meta.yml "  docker_tag: ${DOCKER_TAG}" \
+    && echo >>/etc/docker-meta.yml "  dockerfile_path: ${DOCKERFILE_PATH}" \
+    && echo >>/etc/docker-meta.yml "  dockerfile: |" \
+    && sed >>/etc/docker-meta.yml 's/^/    /' </provision/"${DOCKERFILE_PATH}" \
     && rm -r /provision
-# END CREATE docker-meta.yml
+# END CREATE /etc/docker-meta.yml
 #------------------------------------------------------------------------------
 
 # For building and uploading conda packages and environments
-FROM stefco/llama-env:${DOCKER_TAG}-0.14.0
-USER root
+FROM stefco/llama-env:${DOCKER_TAG}-0.15.1
 
 #------------------------------------------------------------------------------
-# APPEND docker-meta.yml
-COPY --from=meta /docker-meta.yml /new-docker-meta.yml
-RUN cat /new-docker-meta.yml >>/docker-meta.yml \
+# APPEND /etc/docker-meta.yml
+COPY --from=meta /etc/docker-meta.yml /etc/new-docker-meta.yml
+RUN cat /etc/new-docker-meta.yml >>/etc/docker-meta.yml \
     && echo Full meta: \
-    && cat /docker-meta.yml \
-    && rm /new-docker-meta.yml
-# END APPEND docker-meta.yml
+    && cat /etc/docker-meta.yml \
+    && rm /etc/new-docker-meta.yml
+# END APPEND /etc/docker-meta.yml
 #------------------------------------------------------------------------------
 
 # install developer tools
-COPY . /home/llama/provision
-RUN su llama -c 'bash -i -c " \
-    conda install anaconda-client conda-build julia \
-        && julia -e \"using Pkg; Pkg.add(\\\"IJulia\\\")\" \
-        && pip install -r /home/llama/provision/requirements-dev.txt \
-        && pip install git+https://github.com/stefco/pypiprivate.git \
-        && rm -r ~/miniconda3/pkgs \
-    "' \
-    && rm -rf /home/llama/provision
+COPY . ~/provision
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+RUN conda install anaconda-client conda-build julia \
+    && pip install -r ~/provision/requirements-dev.txt \
+    && pip install git+https://github.com/stefco/pypiprivate.git \
+    && rm -r /opt/anaconda/pkgs \
+    && rm -rf ~/provision
+RUN julia -e 'using Pkg; Pkg.add("IJulia")' \
+    && rm -r ~/.julia/compiled
 RUN apt-get -y update \
     && apt-get install -y --no-install-recommends make rsync texlive-full \
     && rm -rf /var/lib/apt/lists/*
-USER llama
