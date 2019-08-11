@@ -51,7 +51,7 @@ RUN cat /etc/new-docker-meta.yml >>/etc/docker-meta.yml \
 # install developer tools
 COPY . ~/provision
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
-        | sh -- -y --default-toolchain nightly
+        | sh -s -- -y --default-toolchain nightly
 RUN conda install anaconda-client conda-build julia \
     && pip install -r ~/provision/requirements-dev.txt \
     && pip install git+https://github.com/stefco/pypiprivate.git \
