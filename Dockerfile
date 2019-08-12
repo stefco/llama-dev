@@ -49,7 +49,7 @@ RUN cat /etc/new-docker-meta.yml >>/etc/docker-meta.yml \
 #------------------------------------------------------------------------------
 
 # install developer tools
-COPY . ~/provision
+COPY . /root/provision
 RUN ls -a ~/provision
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
         | sh -s -- -y --default-toolchain nightly
