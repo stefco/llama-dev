@@ -53,7 +53,7 @@ COPY . /root/provision
 RUN ls -a ~/provision
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
         | sh -s -- -y --default-toolchain nightly
-RUN conda install --file ~/provision/conda-dev.txt \
+RUN conda install anaconda-client conda-build julia \
     && pip install -r ~/provision/requirements-dev.txt \
     && pip install git+https://github.com/stefco/pypiprivate.git \
     && rm -r /opt/anaconda/pkgs \
