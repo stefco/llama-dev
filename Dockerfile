@@ -36,7 +36,7 @@ RUN echo >>/etc/docker-meta.yml "- name: ${NAME}" \
 #------------------------------------------------------------------------------
 
 # For building and uploading conda packages and environments
-FROM stefco/llama-env:${DOCKER_TAG}-0.21.2
+FROM stefco/llama-env:${DOCKER_TAG}-0.21.3
 
 #------------------------------------------------------------------------------
 # APPEND /etc/docker-meta.yml
@@ -56,7 +56,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
 RUN conda install anaconda-client conda-build julia \
     && pip install -r ~/provision/requirements-dev.txt \
     && pip install git+https://github.com/stefco/pypiprivate.git \
-    && /opt/anaconda/conda clean -y --all \
+    && conda clean -y --all \
     && rm -rf ~/provision
 RUN julia -e 'using Pkg; Pkg.add("IJulia")' \
     && rm -r ~/.julia/compiled
