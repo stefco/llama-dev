@@ -1,4 +1,3 @@
-yappi
 ipdb
 git-of-theseus
 pytest
