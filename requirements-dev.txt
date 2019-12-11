@@ -4,6 +4,7 @@ git-of-theseus
 pytest
 pytest-cov
 pytest-html
+pytest-profiling
 psycopg2
 snakeviz
 restructuredtext_lint
