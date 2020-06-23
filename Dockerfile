@@ -60,8 +60,8 @@ RUN conda install \
     && pip install git+https://github.com/stefco/pypiprivate.git \
     && conda clean -y --all \
     && rm -rf ~/provision
-RUN julia -e 'using Pkg; Pkg.add("IJulia")' \
-    && rm -r ~/.julia/compiled
+#RUN julia -e 'using Pkg; Pkg.add("IJulia")' \
+#    && rm -r ~/.julia/compiled
 RUN apt-get -y update \
     && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     && apt-get install -y --no-install-recommends \
