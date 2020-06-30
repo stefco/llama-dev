@@ -36,7 +36,7 @@ RUN echo >>/etc/docker-meta.yml "- name: ${NAME}" \
 #------------------------------------------------------------------------------
 
 # For building and uploading conda packages and environments
-FROM stefco/llama-env:${DOCKER_TAG}-0.36.2
+FROM stefco/llama-env:${DOCKER_TAG}-0.36.4
 
 #------------------------------------------------------------------------------
 # APPEND /etc/docker-meta.yml
@@ -74,8 +74,15 @@ RUN apt-get -y update \
     && rm -rf /var/lib/apt/lists/* \
     && jupyter labextension install \
         @jupyter-widgets/jupyterlab-manager \
-        ipytree \
-        @jupyterlab/toc \
+        jupyter-cytoscape \
         jupyterlab-drawio \
-        @krassowski/jupyterlab_go_to_definition \
-        @ryantam626/jupyterlab_code_formatter
+# get running with jupyter lab --port=8888 --ip=0.0.0.0 --allow-root
+RUN echo Installing stefco/ipycytoscape:user-interaction \
+    && cd /root \
+    && git clone \
+        --branch user-interaction \
+        https://github.com/stefco/ipycytoscape \
+    && cd ipycytoscape \
+    && npm run build \
+    && pip install -e . \
+    && jupyter labextension install .
