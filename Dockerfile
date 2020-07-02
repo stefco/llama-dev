@@ -36,7 +36,7 @@ RUN echo >>/etc/docker-meta.yml "- name: ${NAME}" \
 #------------------------------------------------------------------------------
 
 # For building and uploading conda packages and environments
-FROM stefco/llama-env:${DOCKER_TAG}-0.36.5
+FROM stefco/llama-env:${DOCKER_TAG}-0.38.1
 
 #------------------------------------------------------------------------------
 # APPEND /etc/docker-meta.yml
@@ -51,8 +51,8 @@ RUN cat /etc/new-docker-meta.yml >>/etc/docker-meta.yml \
 # install developer tools
 COPY . /root/provision
 RUN ls -a ~/provision
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
-        | sh -s -- -y --default-toolchain nightly
+#RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+#        | sh -s -- -y --default-toolchain nightly
 RUN conda install \
         anaconda-client \
         conda-build \
