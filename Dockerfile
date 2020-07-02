@@ -56,6 +56,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
 RUN conda install \
         anaconda-client \
         conda-build \
+        ipycytoscape \
     && pip install -r ~/provision/requirements-dev.txt \
     && pip install git+https://github.com/stefco/pypiprivate.git \
     && conda clean -y --all \
@@ -76,3 +77,4 @@ RUN apt-get -y update \
         @jupyter-widgets/jupyterlab-manager \
         jupyter-cytoscape \
         jupyterlab-drawio \
+        jupyter-cytoscape \
