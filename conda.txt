@@ -1,4 +1,5 @@
 compilers
+jupyterhub
 
 # RM
 #autoconf
