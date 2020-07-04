@@ -1,0 +1,10 @@
+compilers
+
+# RM
+#autoconf
+#automake
+#blas
+#cmake
+#gsl
+#pkg-config
+#swig
