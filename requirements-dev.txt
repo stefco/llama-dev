@@ -21,3 +21,4 @@ pylint
 gprof2dot
 python-digitalocean
 fastentrypoints
+flit
