@@ -36,7 +36,7 @@ RUN echo >>/etc/docker-meta.yml "- name: ${NAME}" \
 #------------------------------------------------------------------------------
 
 # For building and uploading conda packages and environments
-FROM stefco/llama-env:${DOCKER_TAG}-0.38.1
+FROM stefco/llama-env-ipy:${DOCKER_TAG}-0.40.0
 
 #------------------------------------------------------------------------------
 # APPEND /etc/docker-meta.yml
@@ -53,28 +53,20 @@ COPY . /root/provision
 RUN ls -a ~/provision
 #RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
 #        | sh -s -- -y --default-toolchain nightly
-RUN conda install \
-        anaconda-client \
-        conda-build \
-        ipycytoscape \
+RUN echo "Contents of ~/provision/conda.txt:" \
+    && cat ~/provision/conda.txt \
+    && conda install -y --file ~/provision/conda.txt \
+    && echo "Contents of ~/provision/requirements-dev.txt:" \
+    && cat ~/provision/requirements-dev.txt \
     && pip install -r ~/provision/requirements-dev.txt \
     && pip install git+https://github.com/stefco/pypiprivate.git \
     && conda clean -y --all \
     && rm -rf ~/provision
-#RUN julia -e 'using Pkg; Pkg.add("IJulia")' \
-#    && rm -r ~/.julia/compiled
-RUN apt-get -y update \
+    && apt-get -y update \
     && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     && apt-get install -y --no-install-recommends \
+        ripgrep \
         make \
         rsync \
         texlive-full \
-    && echo Installing nodejs \
-    && apt-get install -y --no-install-recommends \
-        nodejs \
     && rm -rf /var/lib/apt/lists/* \
-    && jupyter labextension install \
-        @jupyter-widgets/jupyterlab-manager \
-        jupyter-cytoscape \
-        jupyterlab-drawio \
-        jupyter-cytoscape \
