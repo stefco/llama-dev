@@ -36,7 +36,7 @@ RUN echo >>/etc/docker-meta.yml "- name: ${NAME}" \
 #------------------------------------------------------------------------------
 
 # For building and uploading conda packages and environments
-FROM stefco/llama-env-ipy:${DOCKER_TAG}-0.40.0
+FROM stefco/llama-env-ipy:${DOCKER_TAG}-0.40.3
 
 #------------------------------------------------------------------------------
 # APPEND /etc/docker-meta.yml
@@ -53,7 +53,8 @@ COPY . /root/provision
 RUN ls -a ~/provision
 #RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
 #        | sh -s -- -y --default-toolchain nightly
-RUN echo "Contents of ~/provision/conda.txt:" \
+RUN conda activate \
+    && echo "Contents of ~/provision/conda.txt:" \
     && cat ~/provision/conda.txt \
     && conda install -y --file ~/provision/conda.txt \
     && echo "Contents of ~/provision/requirements-dev.txt:" \
@@ -61,7 +62,7 @@ RUN echo "Contents of ~/provision/conda.txt:" \
     && pip install -r ~/provision/requirements-dev.txt \
     && pip install git+https://github.com/stefco/pypiprivate.git \
     && conda clean -y --all \
-    && rm -rf ~/provision
+    && rm -rf ~/provision \
     && apt-get -y update \
     && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     && apt-get install -y --no-install-recommends \

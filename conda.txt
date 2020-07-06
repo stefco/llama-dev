@@ -1,7 +1,6 @@
-compilers
-jupyterhub
 anaconda-client
 conda-build
+jupyterhub
 
 # RM
 #autoconf
