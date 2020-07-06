@@ -12,7 +12,6 @@ sphinx_rtd_theme
 sphinxcontrib-napoleon
 sphinx-argparse
 #recommonmark
-setuptools-scm
 twine
 black
 flake8
@@ -22,3 +21,4 @@ gprof2dot
 python-digitalocean
 fastentrypoints
 flit
+bump2version
